@@ -20,7 +20,7 @@ namespace CalendarEvent.Controllers
             try
             {
                 var viewModel = new CalendarEvent.Models.EventSchedulerViewModel();
-                var CurrentMonth = System.DateTime.Now.Month;
+
                 return PartialView("~/Views/Calendar/ShowMonthList.cshtml", viewModel);
             }
             catch (Exception ex)
