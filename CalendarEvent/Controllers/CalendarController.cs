@@ -14,6 +14,23 @@ namespace CalendarEvent.Controllers
             return View();
         }
 
+        public IActionResult ShowMonthList(CalendarEvent.Models.EventSchedulerViewModel data)
+        {
+            #region Coed
+            try
+            {
+                var viewModel = new CalendarEvent.Models.EventSchedulerViewModel();
+                var CurrentMonth = System.DateTime.Now.Month;
+                return PartialView("~/Views/Calendar/ShowMonthList.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+            #endregion
+        }
+
 
 
         [HttpPost]
@@ -91,6 +108,40 @@ namespace CalendarEvent.Controllers
             }
             #endregion
 
+        }
+
+        public JsonResult Delete(CalendarEvent.Models.EventSchedulerViewModel data)
+        {
+            #region Code
+            #region connection string
+            var optionsBuilder = new DbContextOptionsBuilder<CalendarEvent.Models.EF.EventcalendarContext>();
+            optionsBuilder.UseSqlServer(CalendarEvent.Utinity.AppConfig.GetDBConnection("Sample_ConnectionString"));
+            CalendarEvent.Models.EF.EventcalendarContext MyContext = new CalendarEvent.Models.EF.EventcalendarContext(optionsBuilder.Options);
+            #endregion
+
+            try
+            {
+                //Validate data
+                if (data.Eventid == 0) { throw new Exception("System require EventID!"); }
+
+
+                var oldData = MyContext.EventScheduler.Where(m=>m.Eventid == data.Eventid).FirstOrDefault();
+                if (oldData == null)
+                {
+                    throw new Exception("Not exist data event id=" + data.Eventid);
+                }
+
+                MyContext.Remove<CalendarEvent.Models.EF.EventScheduler>(oldData);
+                MyContext.SaveChanges();
+
+
+                return Json(new { result = true, error = "" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, error = ex.Message });
+            }
+            #endregion
         }
     }
 }

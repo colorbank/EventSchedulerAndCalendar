@@ -55,5 +55,24 @@ namespace CalendarEvent.Controllers.Tests
                 throw;
             }
         }
+
+        [TestMethod()]
+        public void DeleteTest()
+        {
+            try
+            {
+                var target = new  CalendarEvent.Controllers.CalendarController();
+                var data = new CalendarEvent.Models.EventSchedulerViewModel();
+                data.Eventid = 10;
+
+                var actual = target.Delete(data);
+                Assert.IsNotNull(actual);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }
