@@ -14,14 +14,16 @@ namespace CalendarEvent.Controllers
             return View();
         }
 
+
+
         [HttpPost]
-        public JsonResult Save(string actionType,CalendarEvent.Models.EventSchedulerViewModel data)
+        public JsonResult Save(string actionType, CalendarEvent.Models.EventSchedulerViewModel data)
         {
             #region Code
 
             #region connection string
             var optionsBuilder = new DbContextOptionsBuilder<CalendarEvent.Models.EF.EventcalendarContext>();
-            optionsBuilder.UseSqlServer( CalendarEvent.Utinity.AppConfig.GetDBConnection("Sample_ConnectionString"));
+            optionsBuilder.UseSqlServer(CalendarEvent.Utinity.AppConfig.GetDBConnection("Sample_ConnectionString"));
             CalendarEvent.Models.EF.EventcalendarContext MyContext = new CalendarEvent.Models.EF.EventcalendarContext(optionsBuilder.Options);
             #endregion
 
@@ -39,6 +41,7 @@ namespace CalendarEvent.Controllers
                 var CurrentDateTime = CalendarEvent.Utinity.TimeUtility.ConvertDateTimeBySysFormate(System.DateTime.Now);
                 if (actionType == "insert")
                 {
+                    #region Insert process.
                     //Initial data.
                     data.ef = new Models.EF.EventScheduler();
                     data.ef.Eventid = 0;
@@ -53,9 +56,11 @@ namespace CalendarEvent.Controllers
 
                     //Add data before Insert.
                     MyContext.Add<CalendarEvent.Models.EF.EventScheduler>(data.ef);
+                    #endregion
                 }
-                else
+                else if(actionType == "update")
                 {
+                    #region Update process.
                     //Query for get this event.
                     var oldData = MyContext.EventScheduler.Where(m => m.Eventid == data.Eventid).FirstOrDefault();
                     if (oldData == null) { throw new Exception("Not exist data!"); }
@@ -68,6 +73,7 @@ namespace CalendarEvent.Controllers
 
                     //Add data before update.
                     MyContext.Update<CalendarEvent.Models.EF.EventScheduler>(oldData);
+                    #endregion
                 }
 
                 //Commit data.
