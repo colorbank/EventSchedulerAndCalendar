@@ -5,7 +5,7 @@
    "DoNotCombineNamespace": false,
    "IdReplace": false,
    "IncludeConnectionString": false,
-   "ModelNamespace": "EF",
+   "ModelNamespace": "Models.EF",
    "OutputContextPath": null,
    "OutputPath": "Models\/EF",
    "ProjectRootNamespace": "CalendarEvent",

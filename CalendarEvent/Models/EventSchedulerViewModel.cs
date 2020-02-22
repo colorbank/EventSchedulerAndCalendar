@@ -7,9 +7,9 @@ namespace CalendarEvent.Models
 {
     public class EventSchedulerViewModel
     {
-		private CalendarEvent.EF.EventScheduler _ef;
+		private CalendarEvent.Models.EF.EventScheduler _ef;
 
-		public CalendarEvent.EF.EventScheduler ef
+		public CalendarEvent.Models.EF.EventScheduler ef
 		{
 			get { return _ef; }
 			set { _ef = value; }
@@ -54,7 +54,22 @@ namespace CalendarEvent.Models
 		public string Description
 		{
 			get { return _Description; }
-			set { _Description = value; }
+			set {
+				_Description = value;
+				if (string.IsNullOrWhiteSpace(_Description))
+				{
+					_Description = string.Empty;
+				}
+			
+			}
+		}
+
+		private string _Userid;
+
+		public string Userid
+		{
+			get { return _Userid; }
+			set { _Userid = value; }
 		}
 
 

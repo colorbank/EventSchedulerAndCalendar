@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CalendarEvent.EF
+namespace CalendarEvent.Models.EF
 {
     public partial class EventScheduler
     {
