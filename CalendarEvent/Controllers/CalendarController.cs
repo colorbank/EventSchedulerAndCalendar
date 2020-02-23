@@ -14,18 +14,102 @@ namespace CalendarEvent.Controllers
             return View();
         }
 
-        public IActionResult ShowMonthList(CalendarEvent.Models.EventSchedulerViewModel data)
+        public IActionResult ShowMonthList(CalendarEvent.Models.EventSchedulerViewModel param)
         {
             #region Coed
             try
             {
-                var viewModel = new CalendarEvent.Models.EventSchedulerViewModel();
+                //Set default parameter.
+                if (param.MonthInt == 0) { param.MonthInt = System.DateTime.Now.Month; }
+                if (param.YearInt == 0) { param.YearInt = System.DateTime.Now.Year; }
 
-                return PartialView("~/Views/Calendar/ShowMonthList.cshtml", viewModel);
+                //Instance model for display.
+                var ViewModel = new CalendarEvent.Models.EventSchedulerViewModel();
+                ViewModel.DataLists = new List<Models.EventSchedulerViewModel>();
+                var DataRow = new CalendarEvent.Models.EventSchedulerViewModel();
+                var DataColumn = new CalendarEvent.Models.EventSchedulerViewModel();
+                var DataStampList = new List<Models.EventSchedulerViewModel>();
+
+                //Get start date.
+                int StartDayOfWeek = (int)(new DateTime(param.YearInt, param.MonthInt, 1).DayOfWeek);
+                //Get day of month.
+                int DayOfMonth = DateTime.DaysInMonth(param.YearInt, param.MonthInt);
+
+                //Running number of month.
+                int RunningDay = 0;
+
+                #region Get Data form DB.
+                #region connection string
+                var optionsBuilder = new DbContextOptionsBuilder<CalendarEvent.Models.EF.EventcalendarContext>();
+                optionsBuilder.UseSqlServer(CalendarEvent.Utinity.AppConfig.GetDBConnection("Sample_ConnectionString"));
+                CalendarEvent.Models.EF.EventcalendarContext MyContext = new CalendarEvent.Models.EF.EventcalendarContext(optionsBuilder.Options);
+                #endregion
+                //Query and filter of this month.
+                IQueryable<CalendarEvent.Models.EF.EventScheduler> IEventScheduler = MyContext.EventScheduler;
+                DateTime StartDate = new DateTime(param.YearInt, param.MonthInt, 1);
+                DateTime EndDate = new DateTime(param.YearInt, param.MonthInt, DayOfMonth);
+                var efList = IEventScheduler.Where(m => m.Eventdate >= StartDate && m.Eventdate <= EndDate).ToList();
+
+                //Mapping data to list.
+                foreach (var item in efList)
+                {
+                    DataStampList.Add(new Models.EventSchedulerViewModel() { 
+                        ef = item,
+                    });
+                }
+                #endregion
+
+                //Create rows.
+                for (int r = 0; r < 5; r++)
+                {
+                    //New instance for add column.
+                    DataRow = new CalendarEvent.Models.EventSchedulerViewModel();
+                    DataRow.DataLists = new List<Models.EventSchedulerViewModel>();
+
+                    //Create colums.
+                    for (int c = 0; c < 7; c++)
+                    {
+                        //Instance new column.
+                        DataColumn = new CalendarEvent.Models.EventSchedulerViewModel
+                        {
+                            //Add data exp.Sun mon tue....
+                            dayOfWeek = (DayOfWeek)c
+                        };
+
+                        if (r == 0 && c == StartDayOfWeek)//Check start of first row.
+                        {
+                            RunningDay++;
+                            DataColumn.DisplayDay = new DateTime(param.YearInt, param.MonthInt, RunningDay);
+
+                            //Stamp data to this date.
+                            if( DataStampList.Where(m=>m.ef.Eventdate == DataColumn.DisplayDay).Count() > 0)
+                            {
+                                DataColumn.DataLists = DataStampList.Where(m => m.ef.Eventdate == DataColumn.DisplayDay).ToList();
+                            }
+                        }
+                        else if (RunningDay > 0 && RunningDay <= DayOfMonth)
+                        {
+                            RunningDay++;
+                            DataColumn.DisplayDay = new DateTime(param.YearInt, param.MonthInt, RunningDay);
+
+                            //Stamp data to this date.
+                            if ( DataStampList.Where(m=>m.ef.Eventdate == DataColumn.DisplayDay).Count() > 0)
+                            {
+                                DataColumn.DataLists = DataStampList.Where(m => m.ef.Eventdate == DataColumn.DisplayDay).ToList();
+                            }
+                        }
+
+                        //Add column to row.
+                        DataRow.DataLists.Add(DataColumn);
+                    }
+
+                    //Add row model to data all.
+                    ViewModel.DataLists.Add(DataRow);
+                }
+                return PartialView("~/Views/Calendar/ShowMonthList.cshtml", ViewModel);
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
             #endregion
@@ -75,7 +159,7 @@ namespace CalendarEvent.Controllers
                     MyContext.Add<CalendarEvent.Models.EF.EventScheduler>(data.ef);
                     #endregion
                 }
-                else if(actionType == "update")
+                else if (actionType == "update")
                 {
                     #region Update process.
                     //Query for get this event.
@@ -125,7 +209,7 @@ namespace CalendarEvent.Controllers
                 if (data.Eventid == 0) { throw new Exception("System require EventID!"); }
 
 
-                var oldData = MyContext.EventScheduler.Where(m=>m.Eventid == data.Eventid).FirstOrDefault();
+                var oldData = MyContext.EventScheduler.Where(m => m.Eventid == data.Eventid).FirstOrDefault();
                 if (oldData == null)
                 {
                     throw new Exception("Not exist data event id=" + data.Eventid);

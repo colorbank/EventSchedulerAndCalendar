@@ -74,5 +74,22 @@ namespace CalendarEvent.Controllers.Tests
                 throw;
             }
         }
+
+        [TestMethod()]
+        public void ShowMonthListTest()
+        {
+            try
+            {
+                var target = new  CalendarEvent.Controllers.CalendarController();
+                var data = new CalendarEvent.Models.EventSchedulerViewModel();
+                var actual = target.ShowMonthList(data);
+                Assert.IsNotNull(actual);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }

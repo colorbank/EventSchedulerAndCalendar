@@ -74,11 +74,18 @@ namespace CalendarEvent.Models
             set { _Userid = value; }
         }
 
-
+        public DayOfWeek dayOfWeek { get; set; }
+        public DateTime? DisplayDay { get; set; }
         #endregion
+
+        /// <summary>
+        /// Use for dispay data.
+        /// </summary>
+        public List<CalendarEvent.Models.EventSchedulerViewModel> DataLists { get; set; }
 
         #region Parameter filed.
         public int MonthInt { get; set; }
+        public int YearInt { get; set; }
         #endregion
 
     }
