@@ -216,9 +216,10 @@ namespace CalendarEvent.Controllers
             {
                 //Validate data
                 if (data.Eventid == 0) { throw new Exception("System require EventID!"); }
+                if (string.IsNullOrWhiteSpace(data.Userid)) { throw new Exception("System require Userid!"); }
 
 
-                var oldData = MyContext.EventScheduler.Where(m => m.Eventid == data.Eventid).FirstOrDefault();
+                var oldData = MyContext.EventScheduler.Where(m => m.Eventid == data.Eventid && m.Userid == data.Userid).FirstOrDefault();
                 if (oldData == null)
                 {
                     throw new Exception("Not exist data event id=" + data.Eventid);

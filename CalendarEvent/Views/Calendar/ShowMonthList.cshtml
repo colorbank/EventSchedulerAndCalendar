@@ -37,7 +37,9 @@
                             {
                                 <div class=" row">
                                     <div class="col col-sm">
-                                        <span class="badge badge-danger" style="cursor:pointer;">@eventNote.ef.Title</span>
+                                        <span class="badge badge-danger btn-edit-note" style="cursor:pointer;" eventid="@eventNote.ef.Eventid" notetitle="@eventNote.ef.Title" notedesc="@eventNote.ef.Description">
+                                            @eventNote.ef.Title
+                                        </span>
                                     </div>
                                 </div>
                             }
