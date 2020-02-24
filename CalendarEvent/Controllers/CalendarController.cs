@@ -49,7 +49,7 @@ namespace CalendarEvent.Controllers
                 #region Get Data form DB.
                 #region connection string
                 var optionsBuilder = new DbContextOptionsBuilder<CalendarEvent.Models.EF.EventcalendarContext>();
-                optionsBuilder.UseSqlServer(CalendarEvent.Utinity.AppConfig.GetDBConnection("Sample_ConnectionString"));
+                optionsBuilder.UseSqlServer(CalendarEvent.Utility.AppConfig.GetDBConnection("Sample_ConnectionString"));
                 CalendarEvent.Models.EF.EventcalendarContext MyContext = new CalendarEvent.Models.EF.EventcalendarContext(optionsBuilder.Options);
                 #endregion
                 //Query and filter of this month.
@@ -133,7 +133,7 @@ namespace CalendarEvent.Controllers
 
             #region connection string
             var optionsBuilder = new DbContextOptionsBuilder<CalendarEvent.Models.EF.EventcalendarContext>();
-            optionsBuilder.UseSqlServer(CalendarEvent.Utinity.AppConfig.GetDBConnection("Sample_ConnectionString"));
+            optionsBuilder.UseSqlServer(CalendarEvent.Utility.AppConfig.GetDBConnection("Sample_ConnectionString"));
             CalendarEvent.Models.EF.EventcalendarContext MyContext = new CalendarEvent.Models.EF.EventcalendarContext(optionsBuilder.Options);
             #endregion
 
@@ -148,7 +148,7 @@ namespace CalendarEvent.Controllers
                 }
                 #endregion
 
-                var CurrentDateTime = CalendarEvent.Utinity.TimeUtility.ConvertDateTimeBySysFormate(System.DateTime.Now);
+                var CurrentDateTime = CalendarEvent.Utility.TimeUtility.ConvertDateTimeBySysFormate(System.DateTime.Now);
                 if (actionType == "insert")
                 {
                     #region Insert process.
@@ -156,7 +156,7 @@ namespace CalendarEvent.Controllers
                     data.ef = new Models.EF.EventScheduler();
                     data.ef.Eventid = 0;
                     data.ef.Userid = data.Userid;
-                    data.ef.Eventdate = CalendarEvent.Utinity.TimeUtility.ConvertStringToDateBySysFormate(data.StrEventdate);
+                    data.ef.Eventdate = CalendarEvent.Utility.TimeUtility.ConvertStringToDateBySysFormate(data.StrEventdate);
                     data.ef.Title = data.Title;
                     data.ef.Description = data.Description;
                     data.ef.CreatedDate = CurrentDateTime;
@@ -208,7 +208,7 @@ namespace CalendarEvent.Controllers
             #region Code
             #region connection string
             var optionsBuilder = new DbContextOptionsBuilder<CalendarEvent.Models.EF.EventcalendarContext>();
-            optionsBuilder.UseSqlServer(CalendarEvent.Utinity.AppConfig.GetDBConnection("Sample_ConnectionString"));
+            optionsBuilder.UseSqlServer(CalendarEvent.Utility.AppConfig.GetDBConnection("Sample_ConnectionString"));
             CalendarEvent.Models.EF.EventcalendarContext MyContext = new CalendarEvent.Models.EF.EventcalendarContext(optionsBuilder.Options);
             #endregion
 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CalendarEvent.Utinity
+namespace CalendarEvent.Utility
 {
     public class AppConfig
     {

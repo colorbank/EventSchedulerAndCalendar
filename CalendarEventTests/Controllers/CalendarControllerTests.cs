@@ -18,8 +18,8 @@ namespace CalendarEvent.Controllers.Tests
                 var target = new CalendarEvent.Controllers.CalendarController();
                 var data = new CalendarEvent.Models.EventSchedulerViewModel();
 
-                data.StrEventdate = CalendarEvent.Utinity.TimeUtility.ConvertDateToString(System.DateTime.Now);
-                data.Title = "";
+                data.StrEventdate = CalendarEvent.Utility.TimeUtility.ConvertDateToString(System.DateTime.Now);
+                data.Title = "Musk Muchii05";
                 data.Description = "";
                 data.Userid = "Taweechokp";
 

@@ -14,8 +14,35 @@
             <tr style="height:7rem;">
                 @foreach (var td in tr.DataLists)
                 {
-                    <td  class="text-right">
-                        @Html.Raw(td.DisplayDay != null?td.DisplayDay.Value.Day.ToString():"")
+                    string StrDate="";
+                    if (td.DisplayDay != null)
+                    {
+                        StrDate = CalendarEvent.Utility.TimeUtility.ConvertDateToString(td.DisplayDay.Value);
+                    }
+                    <td class=" text-right" day="@StrDate">
+                        <div class="row" style="">
+                            <div class="col col-sm text-left">
+                                @if (td.DisplayDay != null)
+                                {
+                                    <i class="fas fa-plus btn-add-note" style="cursor:pointer;"></i>
+                                }
+                            </div>
+                            <div class="col col-sm">
+                                @Html.Raw(td.DisplayDay != null ? td.DisplayDay.Value.Day.ToString() : "")
+                            </div>
+                        </div>
+                        @if (td.DataLists != null && td.DataLists.Count > 0)
+                        {
+                            @foreach (var eventNote in td.DataLists)
+                            {
+                                <div class=" row">
+                                    <div class="col col-sm">
+                                        <span class="badge badge-danger" style="cursor:pointer;">@eventNote.ef.Title</span>
+                                    </div>
+                                </div>
+                            }
+
+                        }
                     </td>
                 }
             </tr>

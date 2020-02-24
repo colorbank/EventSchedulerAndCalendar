@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CalendarEvent.Utinity
+namespace CalendarEvent.Utility
 {
     public static class TimeUtility
     {
@@ -107,7 +107,7 @@ namespace CalendarEvent.Utinity
                 }
                 else
                 {
-                    return CalendarEvent.Utinity.TimeUtility.ConvertDateTimeBySysFormate(DateTime.Now);
+                    return CalendarEvent.Utility.TimeUtility.ConvertDateTimeBySysFormate(DateTime.Now);
                 }
             }
             catch (Exception ex)
@@ -194,8 +194,8 @@ namespace CalendarEvent.Utinity
             {
                 if (!string.IsNullOrEmpty(beginDate) && !string.IsNullOrEmpty(endDate))
                 {
-                    DateTime beginDate1 = CalendarEvent.Utinity.TimeUtility.ConvertStringToDateBySysFormate(beginDate);
-                    DateTime endDate1 = CalendarEvent.Utinity.TimeUtility.ConvertStringToDateBySysFormate(endDate);
+                    DateTime beginDate1 = CalendarEvent.Utility.TimeUtility.ConvertStringToDateBySysFormate(beginDate);
+                    DateTime endDate1 = CalendarEvent.Utility.TimeUtility.ConvertStringToDateBySysFormate(endDate);
                     double result = 0;
                     result = DateDiff(beginDate1, endDate1);
                     return result;
