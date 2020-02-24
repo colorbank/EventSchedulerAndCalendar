@@ -1,0 +1,24 @@
+﻿@model CalendarEvent.Models.EventSchedulerViewModel
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            @foreach (var th in Model.DataLists.FirstOrDefault().DataLists)
+            {
+                <th class="text-center" style="width:10rem;">@th.dayOfWeek</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tr in Model.DataLists)
+        {
+            <tr style="height:7rem;">
+                @foreach (var td in tr.DataLists)
+                {
+                    <td  class="text-right">
+                        @Html.Raw(td.DisplayDay != null?td.DisplayDay.Value.Day.ToString():"")
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

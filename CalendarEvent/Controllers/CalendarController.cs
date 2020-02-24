@@ -11,7 +11,15 @@ namespace CalendarEvent.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            try
+            {
+                var viewModel = new CalendarEvent.Models.EventSchedulerViewModel();
+                return View("~/Views/Calendar/Index.cshtml",viewModel);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public IActionResult ShowMonthList(CalendarEvent.Models.EventSchedulerViewModel param)
@@ -36,7 +44,7 @@ namespace CalendarEvent.Controllers
                 int DayOfMonth = DateTime.DaysInMonth(param.YearInt, param.MonthInt);
 
                 //Running number of month.
-                int RunningDay = 0;
+                int RunningDay = 1;
 
                 #region Get Data form DB.
                 #region connection string
@@ -53,7 +61,8 @@ namespace CalendarEvent.Controllers
                 //Mapping data to list.
                 foreach (var item in efList)
                 {
-                    DataStampList.Add(new Models.EventSchedulerViewModel() { 
+                    DataStampList.Add(new Models.EventSchedulerViewModel()
+                    {
                         ef = item,
                     });
                 }
@@ -78,25 +87,25 @@ namespace CalendarEvent.Controllers
 
                         if (r == 0 && c == StartDayOfWeek)//Check start of first row.
                         {
-                            RunningDay++;
                             DataColumn.DisplayDay = new DateTime(param.YearInt, param.MonthInt, RunningDay);
 
                             //Stamp data to this date.
-                            if( DataStampList.Where(m=>m.ef.Eventdate == DataColumn.DisplayDay).Count() > 0)
+                            if (DataStampList.Where(m => m.ef.Eventdate == DataColumn.DisplayDay).Count() > 0)
                             {
                                 DataColumn.DataLists = DataStampList.Where(m => m.ef.Eventdate == DataColumn.DisplayDay).ToList();
                             }
+                            RunningDay++;
                         }
-                        else if (RunningDay > 0 && RunningDay <= DayOfMonth)
+                        else if (RunningDay > 1 && RunningDay <= DayOfMonth)
                         {
-                            RunningDay++;
                             DataColumn.DisplayDay = new DateTime(param.YearInt, param.MonthInt, RunningDay);
 
                             //Stamp data to this date.
-                            if ( DataStampList.Where(m=>m.ef.Eventdate == DataColumn.DisplayDay).Count() > 0)
+                            if (DataStampList.Where(m => m.ef.Eventdate == DataColumn.DisplayDay).Count() > 0)
                             {
                                 DataColumn.DataLists = DataStampList.Where(m => m.ef.Eventdate == DataColumn.DisplayDay).ToList();
                             }
+                            RunningDay++;
                         }
 
                         //Add column to row.

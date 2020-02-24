@@ -1,0 +1,124 @@
+﻿@model CalendarEvent.Models.EventSchedulerViewModel
+@{
+    ViewData["Title"] = "Event Scheduler";
+    Layout = "~/Views/Shared/_LayoutCalendar.cshtml";
+}
+    <div class="row mt-2">
+        <div class="col">
+            <form id="Calendar_frmSearch" class="" onsubmit="return false">
+                <div class="form-group row">
+                    <div class="col">
+                        <div class="d-inline-block text-secondary pr-2 pl-2">
+                            <h3>Today : @Html.Raw(CalendarEvent.Utinity.TimeUtility.ConvertDateToString(System.DateTime.Now))</h3>
+                        </div>
+                        <div class="d-inline-block align-self-center ml-2 mr-2">
+                            <select id="calendar-month-list" class="form-control" name="param.MonthInt">
+                                @for (int m = 1; m <= 12; m++)
+                                {
+                                    @if (System.DateTime.Now.Month == m)
+                                    {
+                                        <option value="@m" selected="selected">
+                                            @Html.Raw(new System.DateTime(DateTime.Now.Year, m, 1).ToString("MMMM"))
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@m">
+                                            @Html.Raw(new System.DateTime(DateTime.Now.Year, m, 1).ToString("MMMM"))
+                                        </option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+                        <div class="d-inline-block align-self-center">
+                            <select id="calendar-year-list" class="form-control" name="param.YearInt">
+                                @{
+                                    int StartYear = System.DateTime.Now.Year - 50;
+                                    int EndYear = System.DateTime.Now.Year + 50;
+                                }
+                                @for (int y = StartYear; y <= EndYear + 50; y++)
+                                {
+                                    @if (System.DateTime.Now.Year == y)
+                                    {
+                                        <option value="@y" selected="selected">
+                                            @y.ToString()
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@y">
+                                            @y.ToString()
+                                        </option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col text-right">
+                        <div class="d-inline-block">
+                            <input type="text" placeholder="Search..." class="form-control" />
+                        </div>
+                        <div class="d-inline-block">
+                            <button type="button" id="" class="btn btn-outline-secondary">
+                                <i class="fas fa-search fa-x2"></i>
+                            </button>
+                        </div>
+                        <div class="d-inline-block ml-3">
+                            <i class="fas fa-user-astronaut fa-1x"></i>
+                            Taweechokp
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<div class="row mt-2">
+    <div id="calendar-grid" class="col table-responsive"></div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var Calendar_Var = {};
+        var Calendar_Process = {
+            loadpage: function (pageNo) {
+                var data_send = $('#Calendar_frmSearch').serialize();
+                var ts = new Date().getTime();
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("ShowMonthList","Calendar")?ts=" + ts,
+                    data: data_send,
+                    dataType: "html",
+                    success: function (response) {
+                        $('#calendar-grid').empty().html(response).promise().done(function () {
+                            //To do.
+
+                            Calendar_Process.assignEventGrid();
+                        });
+
+                    },
+                });
+            },
+            assignEventGrid: function () {
+
+            },
+        };
+        var Calendar_Main = {
+            load: function () {
+                Calendar_Process.loadpage();
+                this.assingEvnet();
+            },
+            assingEvnet: function () {
+                $('select#calendar-month-list').change(function () {
+                    Calendar_Process.loadpage();
+                });
+                $('select#calendar-year-list').change(function () {
+                    Calendar_Process.loadpage();
+                });
+            }
+        };
+
+        Calendar_Main.load();
+    </script>
+
+}
