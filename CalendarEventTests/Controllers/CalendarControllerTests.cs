@@ -91,5 +91,24 @@ namespace CalendarEvent.Controllers.Tests
                 throw;
             }
         }
+
+        [TestMethod()]
+        public void ResultSearchTest()
+        {
+            try
+            {
+                var target = new  CalendarEvent.Controllers.CalendarController();
+                var modelFilter = new CalendarEvent.Models.EventSchedulerViewModel();
+                modelFilter.Userid = "Taweechokp";
+                modelFilter.TextSearch = "title";
+                var actual = target.SearchList(modelFilter);
+                Assert.IsNotNull(actual);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace CalendarEvent.Controllers
             try
             {
                 var viewModel = new CalendarEvent.Models.EventSchedulerViewModel();
-                return View("~/Views/Calendar/Index.cshtml",viewModel);
+                return View("~/Views/Calendar/Index.cshtml", viewModel);
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace CalendarEvent.Controllers
                 IQueryable<CalendarEvent.Models.EF.EventScheduler> IEventScheduler = MyContext.EventScheduler;
                 DateTime StartDate = new DateTime(param.YearInt, param.MonthInt, 1);
                 DateTime EndDate = new DateTime(param.YearInt, param.MonthInt, DayOfMonth);
-                var efList = IEventScheduler.Where(m => m.Eventdate >= StartDate && m.Eventdate <= EndDate).ToList();
+                var efList = IEventScheduler.Where(m => m.Userid == param.Userid && m.Eventdate >= StartDate && m.Eventdate <= EndDate).ToList();
 
                 //Mapping data to list.
                 foreach (var item in efList)
@@ -124,6 +124,47 @@ namespace CalendarEvent.Controllers
             #endregion
         }
 
+        public IActionResult SearchList(CalendarEvent.Models.EventSchedulerViewModel modelFilter)
+        {
+            #region Code
+            try
+            {
+                #region connection string
+                var optionsBuilder = new DbContextOptionsBuilder<CalendarEvent.Models.EF.EventcalendarContext>();
+                optionsBuilder.UseSqlServer(CalendarEvent.Utility.AppConfig.GetDBConnection("Sample_ConnectionString"));
+                CalendarEvent.Models.EF.EventcalendarContext MyContext = new CalendarEvent.Models.EF.EventcalendarContext(optionsBuilder.Options);
+                #endregion
+
+                IQueryable<CalendarEvent.Models.EF.EventScheduler> IEventScheduler = MyContext.EventScheduler;
+                var efList = IEventScheduler.Where(m => m.Userid == modelFilter.Userid && 
+                (
+                  m.Eventdate.ToString().Contains(modelFilter.TextSearch)
+                || m.Title.Contains(modelFilter.TextSearch)
+                || m.Description.Contains(modelFilter.TextSearch)
+                )
+                ).ToList();
+
+                var ViewModel = new CalendarEvent.Models.EventSchedulerViewModel();
+                ViewModel.DataLists = new List<Models.EventSchedulerViewModel>();
+
+                //Mapping data to list.
+                foreach (var item in efList)
+                {
+                    ViewModel.DataLists.Add(new Models.EventSchedulerViewModel()
+                    {
+                        ef = item,
+                    });
+                }
+
+
+                return PartialView("~/Views/Calendar/ResultSearch.cshtml", ViewModel);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            #endregion
+        }
 
 
         [HttpPost]

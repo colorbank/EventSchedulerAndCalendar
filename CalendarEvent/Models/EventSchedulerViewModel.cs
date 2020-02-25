@@ -87,6 +87,8 @@ namespace CalendarEvent.Models
         #region Parameter filed.
         public int MonthInt { get; set; }
         public int YearInt { get; set; }
+
+        public string TextSearch { get; set; }
         #endregion
 
     }
