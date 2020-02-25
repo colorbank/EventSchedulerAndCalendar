@@ -11,7 +11,7 @@
                 <td style="width:9rem;">
                     @CalendarEvent.Utility.TimeUtility.ConvertDateToString(item.ef.Eventdate)
                 </td>
-                <td style="width:15rem;">
+                <td style="width:15rem;" day="@CalendarEvent.Utility.TimeUtility.ConvertDateToString(item.ef.Eventdate)">
                     <span  class="btn-link btn-edit-note" style="cursor:pointer;" eventid="@item.ef.Eventid" notetitle="@item.ef.Title" notedesc="@item.ef.Description">
                         @item.ef.Title
                     </span>
