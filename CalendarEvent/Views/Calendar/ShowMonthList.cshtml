@@ -14,12 +14,16 @@
             <tr style="height:7rem;">
                 @foreach (var td in tr.DataLists)
                 {
-                    string StrDate="";
+                    string StrDate="",tdClass="";
                     if (td.DisplayDay != null)
                     {
                         StrDate = CalendarEvent.Utility.TimeUtility.ConvertDateToString(td.DisplayDay.Value);
                     }
-                    <td class=" text-right" day="@StrDate">
+                    if (td.DisplayDay!=null&&td.DisplayDay.Value.Date==System.DateTime.Now.Date)
+                    {
+                        tdClass = "bg-info";
+                    }
+                    <td class=" text-right @tdClass" day="@StrDate">
                         <div class="row" style="">
                             <div class="col col-sm text-left">
                                 @if (td.DisplayDay != null)

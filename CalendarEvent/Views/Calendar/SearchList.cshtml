@@ -1,12 +1,19 @@
 ﻿@model CalendarEvent.Models.EventSchedulerViewModel
-<button type="button" id="calendar-btn-back-to-month" class="btn btn-outline-secondary mb-2">
+<button type="button" id="calendar-btn-back-to-month" class="btn btn-outline-secondary mb-2" title="go to calendar">
     <i class="fas fa-calendar-alt"></i>
     Calendar
 </button>
 <table class="table table-sm table-bordered table-hover">
     <tbody>
-        @foreach (var item in Model.DataLists)
-        {
+        @{ 
+            if (Model.DataLists == null || Model.DataLists.Count == 0)
+            {
+                <tr><td class="text-center">No results found.</td></tr>
+            }
+            else
+            {
+                foreach (var item in Model.DataLists)
+                {
             <tr style="">
                 <td style="width:9rem;">
                     @CalendarEvent.Utility.TimeUtility.ConvertDateToString(item.ef.Eventdate)
@@ -20,6 +27,8 @@
                     @item.ef.Description
                 </td>
             </tr>
-        }
+                    }
+                }
+            }
     </tbody>
 </table>
