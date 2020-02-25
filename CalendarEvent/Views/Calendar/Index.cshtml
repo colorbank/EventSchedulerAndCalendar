@@ -58,17 +58,17 @@
                 </div>
                 <div class="col text-right">
                     <div class="d-inline-block">
-                        <input type="text" placeholder="Search..." class="form-control" />
+                        <input type="text" id="calendar-txt-search" name="param.TextSearch" placeholder="Search..." class="form-control" />
                     </div>
                     <div class="d-inline-block">
-                        <button type="button" id="" class="btn btn-outline-secondary">
+                        <button type="button" id="calendar-btn-search" class="btn btn-outline-secondary">
                             <i class="fas fa-search fa-x2"></i>
                         </button>
                     </div>
                     <div class="d-inline-block ml-3">
                         <i class="fas fa-user-astronaut fa-1x"></i>
                         Taweechokp
-                        @Html.Hidden("param.Userid", "Taweechokp");
+                        @Html.Hidden("param.Userid", "Taweechokp")
                     </div>
                 </div>
             </div>
@@ -118,7 +118,8 @@
         var Calendar_Var = {
             actionType: "",
             eventID: 0,
-            eventDate:"",
+            eventDate: "",
+            page:"month"
         };
         var Calendar_Process = {
             cleardata: function () {
@@ -129,12 +130,30 @@
                 $('.txt-title').val("");
                 $('.txt-desc').val("");
             },
-            loadpage: function () {
+            loadmonth: function () {
                 var data_send = $('#Calendar_frmSearch').serialize();
                 var ts = new Date().getTime();
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("ShowMonthList","Calendar")?ts=" + ts,
+                    data: data_send,
+                    dataType: "html",
+                    success: function (response) {
+                        $('#calendar-grid').empty().html(response).promise().done(function () {
+                            //To do.
+
+                            Calendar_Process.assignEventGrid(response);
+                        });
+
+                    },
+                });
+            },
+            loadsearchlist: function () {
+                var data_send = $('#Calendar_frmSearch').serialize();
+                var ts = new Date().getTime();
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("SearchList","Calendar")?ts=" + ts,
                     data: data_send,
                     dataType: "html",
                     success: function (response) {
@@ -165,7 +184,11 @@
                     success: function (response) {
                         //alert(JSON.stringify(response));
                         if (response.result == true) {
-                            Calendar_Process.loadpage();
+                            if (Calendar_Var.page == "search") {
+                                Calendar_Process.loadsearchlist();
+                            } else {
+                                Calendar_Process.loadmonth();
+                            }
                             Calendar_Process.cleardata();
                         } else {
                             console.log(JSON.stringify(response));
@@ -185,7 +208,11 @@
                     success: function (response) {
                         //alert(JSON.stringify(response));
                         if (response.result == true) {
-                            Calendar_Process.loadpage();
+                            if (Calendar_Var.page == "search") {
+                                Calendar_Process.loadsearchlist();
+                            } else {
+                                Calendar_Process.loadmonth();
+                            }
                             Calendar_Process.cleardata();
                         } else {
                             console.log(JSON.stringify(response));
@@ -218,19 +245,36 @@
                     $('.txt-title').val(note_title);
                     $('.txt-desc').val(note_desc);
                 });
+                $('#calendar-btn-back-to-month').click(function () {
+                    Calendar_Var.page = "month";
+                    Calendar_Process.loadmonth();
+                });
             },
         };
         var Calendar_Main = {
             load: function () {
-                Calendar_Process.loadpage();
+                Calendar_Process.loadmonth();
                 this.assingEvnet();
             },
             assingEvnet: function () {
+                $('#calendar-btn-search').click(function () {
+                    Calendar_Var.page = "search";
+                    Calendar_Process.loadsearchlist();
+                });
+                $('#calendar-txt-search').keypress(function (event) {
+                    var keycode = (event.keyCode ? event.keyCode : event.which);
+                    if (keycode == '13') {
+                        Calendar_Var.page = "search";
+                        Calendar_Process.loadsearchlist();
+                    }
+                });
                 $('select#calendar-month-list').change(function () {
-                    Calendar_Process.loadpage();
+                    Calendar_Var.page = "month";
+                    Calendar_Process.loadmonth();
                 });
                 $('select#calendar-year-list').change(function () {
-                    Calendar_Process.loadpage();
+                    Calendar_Var.page = "month";
+                    Calendar_Process.loadmonth();
                 });
 
                 $('#EntryCalendarModal').on('hidden.bs.modal', function (e) {

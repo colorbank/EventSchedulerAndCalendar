@@ -124,7 +124,7 @@ namespace CalendarEvent.Controllers
             #endregion
         }
 
-        public IActionResult SearchList(CalendarEvent.Models.EventSchedulerViewModel modelFilter)
+        public IActionResult SearchList(CalendarEvent.Models.EventSchedulerViewModel param)
         {
             #region Code
             try
@@ -136,11 +136,11 @@ namespace CalendarEvent.Controllers
                 #endregion
 
                 IQueryable<CalendarEvent.Models.EF.EventScheduler> IEventScheduler = MyContext.EventScheduler;
-                var efList = IEventScheduler.Where(m => m.Userid == modelFilter.Userid && 
+                var efList = IEventScheduler.Where(m => m.Userid == param.Userid && 
                 (
-                  m.Eventdate.ToString().Contains(modelFilter.TextSearch)
-                || m.Title.Contains(modelFilter.TextSearch)
-                || m.Description.Contains(modelFilter.TextSearch)
+                  m.Eventdate.ToString().Contains(param.TextSearch)
+                || m.Title.Contains(param.TextSearch)
+                || m.Description.Contains(param.TextSearch)
                 )
                 ).ToList();
 
@@ -157,7 +157,7 @@ namespace CalendarEvent.Controllers
                 }
 
 
-                return PartialView("~/Views/Calendar/ResultSearch.cshtml", ViewModel);
+                return PartialView("~/Views/Calendar/SearchList.cshtml", ViewModel);
             }
             catch (Exception ex)
             {
