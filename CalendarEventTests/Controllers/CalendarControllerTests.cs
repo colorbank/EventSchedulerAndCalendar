@@ -19,9 +19,11 @@ namespace CalendarEvent.Controllers.Tests
                 var data = new CalendarEvent.Models.EventSchedulerViewModel();
 
                 data.StrEventdate = CalendarEvent.Utility.TimeUtility.ConvertDateToString(System.DateTime.Now);
-                data.Title = "Musk Muchii05";
+                data.Title = "Musk Muchii" + CalendarEvent.Utility.TimeUtility.ConvertDateToString(System.DateTime.Now); ;
                 data.Description = "";
                 data.Userid = "Taweechokp";
+                //data.StartAt = new TimeSpan(8, 30, 30);
+                //data.EndAt = new TimeSpan(17, 30, 25);
 
                 var actual = target.Save("insert", data);
                 Assert.IsNotNull(actual);

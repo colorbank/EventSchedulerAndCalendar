@@ -15,11 +15,18 @@
                 foreach (var item in Model.DataLists)
                 {
             <tr style="">
-                <td style="width:9rem;">
+                <td style="width:13rem;">
                     @CalendarEvent.Utility.TimeUtility.ConvertDateToString(item.ef.Eventdate)
+                    @item.ef.StartAt.Hours:@item.ef.StartAt.Minutes - @item.ef.EndAt.Hours:@item.ef.EndAt.Minutes
                 </td>
-                <td style="width:15rem;" day="@CalendarEvent.Utility.TimeUtility.ConvertDateToString(item.ef.Eventdate)">
-                    <span  class="btn-link btn-edit-note" style="cursor:pointer;" eventid="@item.ef.Eventid" notetitle="@item.ef.Title" notedesc="@item.ef.Description">
+                <td style="width:20rem;" day="@CalendarEvent.Utility.TimeUtility.ConvertDateToString(item.ef.Eventdate)">
+                    <span  class="btn-link btn-edit-note" style="cursor:pointer;" 
+                          eventid="@item.ef.Eventid" 
+                          notetitle="@item.ef.Title" 
+                          notedesc="@item.ef.Description" 
+                          startat="@item.ef.StartAt.Hours:@item.ef.StartAt.Minutes" 
+                          endat="@item.ef.EndAt.Hours:@item.ef.EndAt.Minutes">
+                          
                         @item.ef.Title
                     </span>
                 </td>

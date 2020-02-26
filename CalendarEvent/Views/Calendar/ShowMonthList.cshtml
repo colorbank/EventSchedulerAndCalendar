@@ -41,7 +41,12 @@
                             {
                                 <div class=" row">
                                     <div class="col col-sm">
-                                        <span class="badge badge-danger btn-edit-note" style="cursor:pointer;" eventid="@eventNote.ef.Eventid" notetitle="@eventNote.ef.Title" notedesc="@eventNote.ef.Description">
+                                        <span class="badge badge-danger btn-edit-note" style="cursor:pointer;" 
+                                              eventid="@eventNote.ef.Eventid" 
+                                              notetitle="@eventNote.ef.Title" 
+                                              notedesc="@eventNote.ef.Description" 
+                                              startat="@eventNote.ef.StartAt.Hours:@eventNote.ef.StartAt.Minutes" 
+                                              endat="@eventNote.ef.EndAt.Hours:@eventNote.ef.EndAt.Minutes">
                                             @eventNote.ef.Title
                                         </span>
                                     </div>

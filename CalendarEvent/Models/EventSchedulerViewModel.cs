@@ -77,6 +77,9 @@ namespace CalendarEvent.Models
         public DayOfWeek dayOfWeek { get; set; }
         public DateTime? DisplayDay { get; set; }
         public string LlbFullMonth { get; set; }
+
+        public string StartAt { get; set; }
+        public string EndAt { get; set; }
         #endregion
 
         /// <summary>

@@ -100,6 +100,16 @@
                         <textarea class="form-control txt-desc" id="" rows="3" placeholder="Add Description."></textarea>
                     </div>
                 </div>
+                <div class="form-inline">
+                    <div class="col-1">
+                        <i class="far fa-clock fa-2x"></i>
+                    </div>
+                    <div class="col">
+
+                        <input type="text" id="calendar-time-startat" class="form-control w-25"  readonly="readonly"/> -
+                        <input type="text" id="calendar-time-endat" class="form-control w-25" readonly="readonly" />
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" id="btn-note-delete" data-dismiss="modal" class="btn btn-outline-danger">
@@ -126,9 +136,11 @@
                 Calendar_Var.actionType = "";
                 Calendar_Var.eventID = 0;
                 Calendar_Var.eventDate = "";
-
+                $('#calendar-time-startat').val("");
+                $('#calendar-time-endat').val("");
                 $('.txt-title').val("");
                 $('.txt-desc').val("");
+
             },
             loadmonth: function () {
                 var data_send = $('#Calendar_frmSearch').serialize();
@@ -169,6 +181,8 @@
             save: function () {
                 var title = $('input.txt-title').val();
                 var desc = $('.txt-desc').val();
+                var start_at = $('#calendar-time-startat').val();
+                var end_at = $('#calendar-time-endat').val();
                 var data_send = {
                     "actionType": Calendar_Var.actionType,
                     "data.Eventid": Calendar_Var.eventID,
@@ -176,6 +190,8 @@
                     "data.StrEventdate": Calendar_Var.eventDate,
                     "data.Title": title,
                     "data.Description": desc,
+                    "data.StartAt": start_at,
+                    "data.EndAt": end_at
                 };
                 $.ajax({
                     type: "POST",
@@ -230,6 +246,8 @@
                     //Add data for save
                     Calendar_Var.actionType = "insert";
                     Calendar_Var.eventDate = $(this).parents('td:first').attr('day');
+                    $('#calendar-time-startat').val('08:00').timeselector('refresh');
+                    $('#calendar-time-endat').val('17:00').timeselector('refresh');
                 });
                 $('.btn-edit-note').click(function () {
                     $("#EntryCalendarModal").modal({ backdrop: "static" });
@@ -244,6 +262,11 @@
                     var note_desc = $(this).attr('notedesc');
                     $('.txt-title').val(note_title);
                     $('.txt-desc').val(note_desc);
+
+                    var start_at = $(this).attr('startat');
+                    var end_at = $(this).attr('endat');
+                    $('#calendar-time-startat').val(start_at).timeselector('refresh');
+                    $('#calendar-time-endat').val(end_at).timeselector('refresh');
                 });
                 $('#calendar-btn-back-to-month').click(function () {
                     Calendar_Var.page = "month";
@@ -253,7 +276,13 @@
         };
         var Calendar_Main = {
             load: function () {
+                //Load page show month.
                 Calendar_Process.loadmonth();
+
+                //Call plug in time.
+                $('#calendar-time-startat').timeselector({ hours12: false });
+                $('#calendar-time-endat').timeselector({ hours12: false });
+
                 this.assingEvnet();
             },
             assingEvnet: function () {

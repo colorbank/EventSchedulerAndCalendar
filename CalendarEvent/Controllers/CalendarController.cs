@@ -136,7 +136,7 @@ namespace CalendarEvent.Controllers
                 #endregion
 
                 IQueryable<CalendarEvent.Models.EF.EventScheduler> IEventScheduler = MyContext.EventScheduler;
-                var efList = IEventScheduler.Where(m => m.Userid == param.Userid && 
+                var efList = IEventScheduler.Where(m => m.Userid == param.Userid &&
                 (
                   m.Eventdate.ToString().Contains(param.TextSearch)
                 || m.Title.Contains(param.TextSearch)
@@ -204,6 +204,8 @@ namespace CalendarEvent.Controllers
                     data.ef.CreateBy = data.Userid;
                     data.ef.UpdatedDate = CurrentDateTime;
                     data.ef.UpdatedBy = data.Userid;
+                    data.ef.StartAt = TimeSpan.Parse(data.StartAt);
+                    data.ef.EndAt = TimeSpan.Parse(data.EndAt);
 
                     //Add data before Insert.
                     MyContext.Add<CalendarEvent.Models.EF.EventScheduler>(data.ef);
@@ -221,6 +223,8 @@ namespace CalendarEvent.Controllers
                     oldData.Description = data.Description;
                     oldData.UpdatedDate = CurrentDateTime;
                     oldData.UpdatedBy = data.Userid;
+                    oldData.StartAt = TimeSpan.Parse(data.StartAt);
+                    oldData.EndAt = TimeSpan.Parse(data.EndAt);
 
                     //Add data before update.
                     MyContext.Update<CalendarEvent.Models.EF.EventScheduler>(oldData);
