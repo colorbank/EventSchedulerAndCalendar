@@ -8,7 +8,7 @@ Add Schedule,Evnet to calendar.
 #### Configuration
 * Import example database to your sql server.
 * Config code in appsettings.json for change your database server.
-  Example:   
+* Example:   
   ```
   "Data": {
       "Sample_ConnectionString": {
