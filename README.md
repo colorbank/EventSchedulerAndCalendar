@@ -12,7 +12,7 @@ Add Schedule,Evnet to calendar.
   ```
   "Data": {
       "Sample_ConnectionString": {
-        "ConnectionString": "Server=THAIMIS-BANK;Database=EventCalendar;User ID=sa;Password=1234;"
+        "ConnectionString": "Server=YourServer;Database=EventCalendar;User ID=sa;Password=1234;"
       }
     },
     ```
