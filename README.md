@@ -1,5 +1,5 @@
 # CalendarEvent
-ASP.NET Core with bootstrap
+ASP.NET MVC Core use entity framework with bootstrap.
 ## Usage
 Add Schedule,Evnet to calendar.
 ### Tool.
