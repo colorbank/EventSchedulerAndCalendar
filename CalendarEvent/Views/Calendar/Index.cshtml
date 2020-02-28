@@ -105,9 +105,34 @@
                         <i class="far fa-clock fa-2x"></i>
                     </div>
                     <div class="col">
+                        <select class="form-control" id="calendar-time-startat">
+                            @{ 
+                                int running_number = 0;
 
-                        <input type="text" id="calendar-time-startat" class="form-control w-25"  readonly="readonly"/> -
-                        <input type="text" id="calendar-time-endat" class="form-control w-25" readonly="readonly" />
+                                for (int h = 0; h <= 23; h++)
+                                {
+                                    for (int m = 0; m <= 45; m += 15)
+                                    {
+                                        <option value="@h:@m" value1="@running_number">@h.ToString("D2"):@m.ToString("D2")</option>
+                                        running_number++;
+                                    }
+                                }
+                             }
+                        </select> 
+                        - 
+                        <select class="form-control" id="calendar-time-endat">
+                            @{ 
+                                running_number = 0;
+                                for (int h = 0; h <= 23; h++)
+                                {
+                                    for (int m = 0; m <= 45; m += 15)
+                                    {
+                                    <option value="@h:@m" value1="@running_number">@h.ToString("D2"):@m.ToString("D2")</option>
+                                        running_number++;
+                                    }
+                                }
+                            }
+                        </select>
                     </div>
                 </div>
             </div>
@@ -136,11 +161,10 @@
                 Calendar_Var.actionType = "";
                 Calendar_Var.eventID = 0;
                 Calendar_Var.eventDate = "";
-                $('#calendar-time-startat').val("");
-                $('#calendar-time-endat').val("");
+
                 $('.txt-title').val("");
                 $('.txt-desc').val("");
-
+                return true;
             },
             loadmonth: function () {
                 var data_send = $('#Calendar_frmSearch').serialize();
@@ -181,8 +205,8 @@
             save: function () {
                 var title = $('input.txt-title').val();
                 var desc = $('.txt-desc').val();
-                var start_at = $('#calendar-time-startat').val();
-                var end_at = $('#calendar-time-endat').val();
+                var start_at = $('#calendar-time-startat option:selected').val();
+                var end_at = $('#calendar-time-endat option:selected').val();
                 var data_send = {
                     "actionType": Calendar_Var.actionType,
                     "data.Eventid": Calendar_Var.eventID,
@@ -237,18 +261,20 @@
                 });
             },
             assignEventGrid: function (response) {
+                //Add note.
                 $('.btn-add-note').click(function () {
                     //alert($(this).parents('td:first').attr('day'));
                     $("#EntryCalendarModal").modal({ backdrop: "static" });
                     $('#btn-note-delete').hide();
-                    Calendar_Process.cleardata();
+                    var result_clear =  Calendar_Process.cleardata();
 
                     //Add data for save
                     Calendar_Var.actionType = "insert";
                     Calendar_Var.eventDate = $(this).parents('td:first').attr('day');
-                    $('#calendar-time-startat').val('08:00').timeselector('refresh');
-                    $('#calendar-time-endat').val('17:00').timeselector('refresh');
+                    $('#calendar-time-startat option[value="8:0"]').prop('selected', true);
+                    $('#calendar-time-endat option[value="17:0"]').prop("selected", true);
                 });
+                //Edit note
                 $('.btn-edit-note').click(function () {
                     $("#EntryCalendarModal").modal({ backdrop: "static" });
                     $('#btn-note-delete').show();
@@ -265,8 +291,10 @@
 
                     var start_at = $(this).attr('startat');
                     var end_at = $(this).attr('endat');
-                    $('#calendar-time-startat').val(start_at).timeselector('refresh');
-                    $('#calendar-time-endat').val(end_at).timeselector('refresh');
+                    $('#calendar-time-startat option[value="' + start_at + '"]').prop("selected", true);
+                    $('#calendar-time-endat option[value="' + end_at + '"]').prop("selected", true);
+
+
                 });
                 $('#calendar-btn-back-to-month').click(function () {
                     Calendar_Var.page = "month";
@@ -278,10 +306,6 @@
             load: function () {
                 //Load page show month.
                 Calendar_Process.loadmonth();
-
-                //Call plug in time.
-                $('#calendar-time-startat').timeselector({ hours12: false });
-                $('#calendar-time-endat').timeselector({ hours12: false });
 
                 this.assingEvnet();
             },
@@ -316,6 +340,36 @@
 
                 $('#btn-note-delete').click(function () {
                     Calendar_Process.delete();
+                });
+
+                $('#calendar-time-startat').change(function () {
+                    var _min_at = $(this).find('option:selected').attr('value1');
+                    var min_at = parseInt(_min_at);
+                    //alert(min_at);
+                    $('#calendar-time-endat > option').each(function () {
+                        var _val1 = $(this).attr('value1');
+                        var val1 = parseInt(_val1);
+                        if (val1 < min_at) {
+                            $(this).hide();
+                        } else {
+                            $(this).show();
+                        }
+                    });
+                });
+
+                $('#calendar-time-endat').change(function () {
+                    var _max_at = $(this).find('option:selected').attr('value1');
+                    var max_at = parseInt(_max_at);
+                    //alert(max_at);
+                    $('#calendar-time-startat > option').each(function () {
+                        var _val1 = $(this).attr('value1');
+                        var val1 = parseInt(_val1);
+                        if (val1 > max_at) {
+                            $(this).hide();
+                        } else {
+                            $(this).show();
+                        }
+                    });
                 });
             }
         };
