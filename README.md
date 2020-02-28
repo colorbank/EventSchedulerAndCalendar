@@ -7,6 +7,7 @@ Add Schedule,Evnet to calendar.
 * MS Sql server.
 * JQuery.
 * Bootstrap 4.
+* Entity framework core.
 #### Configuration
 * Import example database to your sql server.
 * Config code in "appsettings.json" for change your database server.
