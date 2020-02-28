@@ -17,7 +17,7 @@
             <tr style="">
                 <td style="width:13rem;">
                     @CalendarEvent.Utility.TimeUtility.ConvertDateToString(item.ef.Eventdate)
-                    @item.ef.StartAt.Hours:@item.ef.StartAt.Minutes - @item.ef.EndAt.Hours:@item.ef.EndAt.Minutes
+                    @item.ef.StartAt.Hours.ToString("D2"):@item.ef.StartAt.Minutes.ToString("D2") - @item.ef.EndAt.Hours.ToString("D2"):@item.ef.EndAt.Minutes.ToString("D2")
                 </td>
                 <td style="width:20rem;" day="@CalendarEvent.Utility.TimeUtility.ConvertDateToString(item.ef.Eventdate)">
                     <span  class="btn-link btn-edit-note" style="cursor:pointer;" 
