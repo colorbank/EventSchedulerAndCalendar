@@ -5,6 +5,8 @@ Add Schedule,Evnet to calendar.
 ### Tool.
 * Visual studio 2019.
 * MS Sql server.
+* JQuery.
+* Bootstrap 4.
 #### Configuration
 * Import example database to your sql server.
 * Config code in "appsettings.json" for change your database server.
