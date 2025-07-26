@@ -63,3 +63,45 @@
 
 📬 **Email**: tplajai@gmail.com  
 💬 **LINE ID**: `sweetbank`
+
+Eng Ver.
+
+# EventSchedulerAndCalendar
+
+**Author**: [colorbank](https://github.com/colorbank)  
+**Repository**: [https://github.com/colorbank/EventSchedulerAndCalendar](https://github.com/colorbank/EventSchedulerAndCalendar)
+
+## 📌 Description
+A calendar and event scheduling application.
+
+This project is a calendar and event scheduling application built with Java and JavaFX.  
+It allows users to create, view, and manage events in a calendar interface.
+
+## 🚀 Features
+- Monthly calendar view  
+- Add, edit, and delete events  
+- Event details and time management  
+- JavaFX-based GUI  
+- Local data persistence  
+
+## 🛠️ Technologies Used
+- Java  
+- JavaFX  
+- Scene Builder (FXML)  
+- CSS for styling  
+
+## 📦 Installation
+1. Clone the repository:  
+   `git clone https://github.com/colorbank/EventSchedulerAndCalendar.git`
+2. Open the project in your preferred Java IDE (e.g., IntelliJ, Eclipse)
+3. Make sure JavaFX is properly configured in your environment
+4. Build and run the application
+
+## ▶️ Usage
+- Launch the application
+- Use the calendar interface to navigate through months
+- Click on a date to add or view events
+- Edit or delete events as needed
+
+## 📄 License
+This project is licensed under the MIT License. See the LICENSE file for details.
